@@ -1,0 +1,17 @@
+#!/bin/sh
+# Ветка data пушится ТОЛЬКО в приватный remote (private).
+# В публичный origin разрешён только main.
+remote="$1"
+
+while read -r local_ref local_sha remote_ref remote_sha; do
+    if [ "$remote" = "origin" ]; then
+        case "$local_ref$remote_ref" in
+            *refs/heads/data*)
+                echo "pre-push: ветка data содержит личные данные — в origin (public) её пушить нельзя." >&2
+                echo "Используй: git push private data" >&2
+                exit 1
+                ;;
+        esac
+    fi
+done
+exit 0

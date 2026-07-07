@@ -1,0 +1,29 @@
+#!/bin/sh
+# Защита разделения кода и данных (см. docs/specs/2026-07-07-skill-repo-pilot-design.md):
+#   data-ветка: коммиты трогают ТОЛЬКО skills/*/data/**
+#   остальные ветки (main и пр.): данные (skills/*/data/**, кроме .gitkeep) НЕ коммитятся
+# Merge-коммиты (main→data) пропускаются.
+
+[ -f "$(git rev-parse --git-dir)/MERGE_HEAD" ] && exit 0
+
+branch=$(git symbolic-ref --short -q HEAD)
+staged=$(git diff --cached --name-only)
+[ -z "$staged" ] && exit 0
+
+if [ "$branch" = "data" ]; then
+    bad=$(echo "$staged" | grep -v '^skills/[^/]*/data/' || true)
+    if [ -n "$bad" ]; then
+        echo "pre-commit: на ветке data разрешены только файлы skills/*/data/**." >&2
+        echo "Код скиллов правится на main (затем merge main→data). Отклонено:" >&2
+        echo "$bad" | sed 's/^/  /' >&2
+        exit 1
+    fi
+else
+    bad=$(echo "$staged" | grep '^skills/[^/]*/data/' | grep -v '/\.gitkeep$' || true)
+    if [ -n "$bad" ]; then
+        echo "pre-commit: данные (skills/*/data/**) коммитятся только на ветке data. Отклонено:" >&2
+        echo "$bad" | sed 's/^/  /' >&2
+        exit 1
+    fi
+fi
+exit 0

@@ -1,0 +1,13 @@
+{
+  "name": "diordits-skills",
+  "owner": {
+    "name": "DiorditsPV"
+  },
+  "plugins": [
+    {
+      "name": "diordits-skills",
+      "source": "./",
+      "description": "Разбор YouTube-роликов по субтитрам (youtube-breakdown) и другие личные скиллы. Скиллы-процессы с накоплением данных: данные не публикуются."
+    }
+  ]
+}

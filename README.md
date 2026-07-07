@@ -13,6 +13,7 @@
 | [skill-new](skills/skill-new/SKILL.md) | Создание нового скилла по канону (компактный SKILL.md, сильный description) | нет |
 | [skill-audit](skills/skill-audit/SKILL.md) | Аудит существующего скилла на best practices | нет |
 | [present-html](skills/present-html/SKILL.md) | Презентация/разбор как пара md + самодостаточный html | нет |
+| [curator](skills/curator/SKILL.md) | Обслуживание библиотеки скиллов: статистика использования, архив, консолидация | да |
 
 ## Устройство: код публичный, данные приватные
 

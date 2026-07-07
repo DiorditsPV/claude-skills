@@ -12,6 +12,7 @@
 | [cdp-browser](skills/cdp-browser/SKILL.md) | «Чистый» Chrome с CDP-портом для сайтов с анти-бот-защитой | нет |
 | [skill-new](skills/skill-new/SKILL.md) | Создание нового скилла по канону (компактный SKILL.md, сильный description) | нет |
 | [skill-audit](skills/skill-audit/SKILL.md) | Аудит существующего скилла на best practices | нет |
+| [present-html](skills/present-html/SKILL.md) | Презентация/разбор как пара md + самодостаточный html | нет |
 
 ## Устройство: код публичный, данные приватные
 

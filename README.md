@@ -14,6 +14,15 @@
 | [skill-audit](skills/skill-audit/SKILL.md) | Аудит существующего скилла на best practices | нет |
 | [present-html](skills/present-html/SKILL.md) | Презентация/разбор как пара md + самодостаточный html | нет |
 | [curator](skills/curator/SKILL.md) | Обслуживание библиотеки скиллов: статистика использования, архив, консолидация | да |
+| [trino-schema-to-wiki](skills/trino-schema-to-wiki/SKILL.md) | Документирование Trino-схем в Confluence: разведка структур, сэмплы, страницы по таблицам | нет |
+| [summarize-thread](skills/summarize-thread/SKILL.md) | Хронологическая сводка текущего диалога: задача → ход работы → статус; в файлы не пишет | нет |
+| [grill-me](skills/grill-me/SKILL.md) | Жёсткое интервью по плану/дизайну до общего понимания (адаптация промпта mattpokock) | нет |
+
+## Агенты
+
+| Агент | Что делает |
+|---|---|
+| [technical-writer](agents/technical-writer.md) | Пишет и редактирует понятную документацию: код, репозиторий, статья, гайд, справочник |
 
 ## Устройство: код публичный, данные приватные
 

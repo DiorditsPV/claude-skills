@@ -1,6 +1,8 @@
-// REST-хелпер confluence.example.internal через CDP-браузер с SSO (фолбэк, когда Confluence MCP
-// лежит, и единственный путь для вложений). Браузер поднимает скилл cdp-browser:
-//   bash ~/.claude/skills/cdp-browser/scripts/ensure.sh --persist "https://confluence.example.internal/"
+// REST-хелпер Confluence через CDP-браузер с SSO (фолбэк, когда Confluence MCP
+// лежит, и единственный путь для вложений). Базовый URL — из переменной
+// окружения CONFLUENCE_BASE_URL, дефолта нет. Браузер поднимает скилл
+// cdp-browser:
+//   bash ~/.claude/skills/cdp-browser/scripts/ensure.sh --persist "$CONFLUENCE_BASE_URL"
 // Если открыт только service worker — вкладку создаёт ensureTab().
 //
 // Использование в ad-hoc скрипте:
@@ -13,14 +15,22 @@ import { readFileSync } from 'node:fs';
 const CDP = `${process.env.HOME}/.claude/skills/cdp-browser/scripts/cdp.mjs`;
 
 export async function open(port = 9222) {
+  const base = process.env.CONFLUENCE_BASE_URL;
+  if (!base) throw new Error('CONFLUENCE_BASE_URL не задан: укажи базовый URL Confluence');
+  const host = new URL(base).host;
+  const isWiki = (t) => {
+    if (t.type !== 'page') return false;
+    try { return new URL(t.url).host === host; } catch { return false; }
+  };
+
   const { connect } = await import(CDP);
   let conn;
   try {
-    conn = await connect(port, t => t.type === 'page' && /wiki\.x5\.ru/.test(t.url));
+    conn = await connect(port, isWiki);
   } catch {
-    await fetch(`http://127.0.0.1:${port}/json/new?https://confluence.example.internal/`, { method: 'PUT' });
+    await fetch(`http://127.0.0.1:${port}/json/new?${base}`, { method: 'PUT' });
     await new Promise(r => setTimeout(r, 3000));
-    conn = await connect(port, t => t.type === 'page' && /wiki\.x5\.ru/.test(t.url));
+    conn = await connect(port, isWiki);
   }
   const { ev, close } = conn;
 

@@ -2,13 +2,13 @@
 
 Запуск (из любого каталога):
   uv run --with trino --with tabulate python export_samples.py \
-    --server <trino-server> --catalog <catalog> --schema <schema> \
-    --tables <table1>,<table2> --rows 15 --out-dir ./samples
+    --server <mcp-сервер> --catalog <каталог> --schema <схема> \
+    --tables <таблица1,таблица2> --rows 15 --out-dir ./samples
 
 Креды берёт из ~/.claude.json → mcpServers[<server>].env (TRINO_*), не печатает.
---snapshot-col <load_ts_col> (дефолт): срез = последний снапшот по литералу;
---snapshot-col "" — просто LIMIT без фиксации снапшота.
---drop-cols a,b — исключить колонки (например, широкие *_surrkey) из сэмпла.
+--snapshot-col <колонка> — метка потока загрузки: срез = последний снапшот по
+литералу; без неё (дефолт) — просто LIMIT без фиксации снапшота.
+--drop-cols a,b — исключить колонки (например, широкие хэш-ключи) из сэмпла.
 """
 
 import argparse
@@ -26,12 +26,12 @@ urllib3.disable_warnings()
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--server", default="<trino-server>")
+    ap.add_argument("--server", required=True, help="имя MCP-сервера Trino в ~/.claude.json")
     ap.add_argument("--catalog", required=True)
     ap.add_argument("--schema", required=True)
     ap.add_argument("--tables", required=True, help="через запятую")
     ap.add_argument("--rows", type=int, default=15)
-    ap.add_argument("--snapshot-col", default="<load_ts_col>")
+    ap.add_argument("--snapshot-col", default="", help="колонка-метка потока загрузки")
     ap.add_argument("--drop-cols", default="", help="колонки, исключаемые из сэмпла")
     ap.add_argument("--out-dir", required=True)
     args = ap.parse_args()

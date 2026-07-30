@@ -7,7 +7,8 @@ allowed-tools:
 ---
 
 Скилл гарантирует запущенный «чистый» Chrome на CDP-порту и даёт инструменты для работы с ним.
-Подробный разбор почему так — `~/dev/docs/claude/guides/mcp-devtools-browser-setup.md`.
+Разбор, почему именно так (флаги, профили, cookies, настройка MCP, диагностика) —
+[`reference/chrome-cdp-setup.md`](reference/chrome-cdp-setup.md).
 
 ## Когда применять
 Сайт пускает обычный браузер, но банит автоматизацию (Server error / «Отключите VPN» / капча),
@@ -17,29 +18,35 @@ Chrome с automation-флагами (`navigator.webdriver=true`) и палитс
 
 ## Процедура
 
+Скрипты лежат в `scripts/` рядом с этим файлом. Абсолютный путь к каталогу скилла зависит
+от способа установки (plugin-кэш или симлинк в `~/.claude/skills/`) и сообщается при загрузке
+скилла — подставь его в `SKILL_DIR` и дальше используй только эту переменную:
+```bash
+SKILL_DIR="<абсолютный путь к каталогу этого скилла>"
+```
+
 1. **Гарантировать браузер** (идемпотентно — если порт жив, повторно не запускает):
-   Пути без кавычек (в них нет пробелов) — иначе `~` не раскроется:
    ```bash
-   bash ~/.claude/skills/cdp-browser/scripts/ensure.sh                 # эфемерный профиль /tmp/chrome-cdp
-   bash ~/.claude/skills/cdp-browser/scripts/ensure.sh --persist       # стабильный ~/.cache/chrome-cdp-profile (cookies сохраняются)
-   bash ~/.claude/skills/cdp-browser/scripts/ensure.sh --persist "https://target.example/page/"   # сразу открыть URL
+   bash "$SKILL_DIR/scripts/ensure.sh"                 # эфемерный профиль /tmp/chrome-cdp
+   bash "$SKILL_DIR/scripts/ensure.sh" --persist       # стабильный ~/.cache/chrome-cdp-profile (cookies сохраняются)
+   bash "$SKILL_DIR/scripts/ensure.sh" --persist "https://target.example/page/"   # сразу открыть URL
    ```
    Скрипт сам ждёт подъёма порта и печатает `/json/version`.
 
 2. **Проверить чистоту** (должно быть `false`):
    ```bash
-   node ~/.claude/skills/cdp-browser/scripts/cdp.mjs "https://target.example/page/" "navigator.webdriver"
+   node "$SKILL_DIR/scripts/cdp.mjs" "https://target.example/page/" "navigator.webdriver"
    ```
 
 3. **Драйвить страницу** одним из способов:
    - **Прямой CDP (по умолчанию, без рестарта сессии).** CLI для быстрой проверки:
      ```bash
-     node ~/.claude/skills/cdp-browser/scripts/cdp.mjs "<url>" "document.title"
+     node "$SKILL_DIR/scripts/cdp.mjs" "<url>" "document.title"
      ```
-     Для обхода многих страниц — импортируй хелпер в свой скрипт (динамический import,
-     т.к. `~` в пути не раскрывается — берём абсолютный через `$HOME`):
+     Для обхода многих страниц — импортируй хелпер в свой скрипт (динамический import
+     по **абсолютному** пути: `~` в путях модулей не раскрывается):
      ```js
-     const { connect } = await import(`${process.env.HOME}/.claude/skills/cdp-browser/scripts/cdp.mjs`);
+     const { connect } = await import('<SKILL_DIR>/scripts/cdp.mjs');
      const { ev, goto, close } = await connect(9222);
      await goto('<url>');                 // навигация + ожидание + автоскролл ленивого контента
      const title = await ev('document.title');
@@ -47,7 +54,7 @@ Chrome с automation-флагами (`navigator.webdriver=true`) и палитс
      ```
    - **MCP `chrome-devtools`** — только если сервер заранее настроен с `--browser-url=http://127.0.0.1:9222`
      **и** браузер был поднят до старта сессии. Иначе MCP поднимет свой automation-Chrome — не используй
-     этот путь без предварительной настройки (см. гайд, §4).
+     этот путь без предварительной настройки (как настроить — `reference/chrome-cdp-setup.md`, §5).
 
 ## Практические заметки (при скрейпинге)
 - **Инкрементальная запись** — сохраняй результат в файл после *каждой* страницы (таймаут не обнулит прогресс).
@@ -60,6 +67,8 @@ Chrome с automation-флагами (`navigator.webdriver=true`) и палитс
 - Скилл **не может** перезапустить Claude Code или перечитать аргументы MCP-сервера — поэтому MCP-native
   путь требует ручной предварительной настройки, а дефолт здесь — прямой CDP.
 - macOS-путь к Chrome зашит в `ensure.sh`; переопределяется через `CHROME_BIN`.
+- Если порт не поднялся («забытый» automation-Chrome, дефолтный профиль) — диагностика
+  в `reference/chrome-cdp-setup.md`, §4.
 
 ## Завершение
 Служебный браузер можно оставить (следующий вызов переиспользует порт) или закрыть:

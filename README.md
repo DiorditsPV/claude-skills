@@ -9,7 +9,7 @@
 | Скилл | Что делает | Data-skill |
 |---|---|---|
 | [youtube-breakdown](skills/youtube-breakdown/SKILL.md) | Разбор YouTube-роликов по субтитрам; накапливает разборы и отвечает по ним | да |
-| [cdp-browser](skills/cdp-browser/SKILL.md) | «Чистый» Chrome с CDP-портом для сайтов с анти-бот-защитой | нет |
+| [cdp-browser](skills/cdp-browser/SKILL.md) | «Чистый» Chrome с CDP-портом для сайтов с анти-бот-защитой ([разбор устройства](skills/cdp-browser/reference/chrome-cdp-setup.md)) | нет |
 | [skill-new](skills/skill-new/SKILL.md) | Создание нового скилла по канону (компактный SKILL.md, сильный description) | нет |
 | [skill-audit](skills/skill-audit/SKILL.md) | Аудит существующего скилла на best practices | нет |
 | [present-html](skills/present-html/SKILL.md) | Презентация/разбор как пара md + самодостаточный html | нет |

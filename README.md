@@ -14,7 +14,7 @@
 | [skill-audit](skills/skill-audit/SKILL.md) | Аудит существующего скилла на best practices | нет |
 | [present-html](skills/present-html/SKILL.md) | Презентация/разбор как пара md + самодостаточный html | нет |
 | [curator](skills/curator/SKILL.md) | Обслуживание библиотеки скиллов: статистика использования, архив, консолидация | да |
-| [trino-schema-to-wiki](skills/trino-schema-to-wiki/SKILL.md) | Документирование Trino-схем в Confluence: разведка структур, сэмплы, страницы по таблицам | нет |
+| [to-wiki](skills/to-wiki/SKILL.md) | Документирование существующего в Confluence: фактура из первоисточника, разделы по предмету, публикация страницей ([storage-разметка](skills/to-wiki/reference/confluence-storage.md)) | нет |
 | [summarize-thread](skills/summarize-thread/SKILL.md) | Хронологическая сводка текущего диалога: задача → ход работы → статус; в файлы не пишет | нет |
 | [grill-me](skills/grill-me/SKILL.md) | Жёсткое интервью по плану/дизайну до общего понимания (адаптация промпта mattpokock) | нет |
 

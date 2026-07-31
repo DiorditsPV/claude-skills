@@ -1,4 +1,4 @@
-"""Сэмплы таблиц Trino-схемы: CSV + выровненная markdown-таблица (tabulate).
+"""Сэмплы таблиц Trino-схемы для скилла to-wiki: CSV + выровненная markdown-таблица.
 
 Запуск (из любого каталога):
   uv run --with trino --with tabulate python export_samples.py \

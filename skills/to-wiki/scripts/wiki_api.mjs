@@ -6,7 +6,7 @@
 // Если открыт только service worker — вкладку создаёт ensureTab().
 //
 // Использование в ad-hoc скрипте:
-//   const w = await import(`${process.env.HOME}/.claude/skills/trino-schema-to-wiki/scripts/wiki_api.mjs`);
+//   const w = await import(`${process.env.HOME}/.claude/skills/to-wiki/scripts/wiki_api.mjs`);
 //   const { api, getPage, createPage, updatePage, uploadAttachment, close } = await w.open();
 //   const p = await createPage({space: '~User.Name', title: 'T', storage: '<p>…</p>', parentId: 123});
 

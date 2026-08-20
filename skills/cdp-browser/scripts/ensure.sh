@@ -61,7 +61,7 @@ nohup "$CHROME_BIN" \
   --user-data-dir="$PROFILE" \
   --remote-debugging-port="$PORT" \
   --no-first-run --no-default-browser-check \
-  ${URL:+"$URL"} >/dev/null 2>&1 &
+  "${URL:-about:blank}" >/dev/null 2>&1 &   # без вкладки нет page-таргета, и cdp.mjs не к чему подключиться
 
 # 3. Дождаться порта (до ~15 c)
 for _ in $(seq 1 30); do

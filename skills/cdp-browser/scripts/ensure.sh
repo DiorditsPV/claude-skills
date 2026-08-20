@@ -15,7 +15,16 @@ set -euo pipefail
 PORT=9222
 PERSIST=0
 URL=""
-CHROME_BIN="${CHROME_BIN:-/Applications/Google Chrome.app/Contents/MacOS/Google Chrome}"
+# порядок выбора бинарника: $CHROME_BIN → отдельный бандл «Chrome CDP» (своя иконка
+# в Dock, собирается scripts/make-cdp-app.sh) → обычный Google Chrome
+CDP_APP="$HOME/Applications/Chrome CDP.app/Contents/MacOS/Google Chrome"
+if [ -z "${CHROME_BIN:-}" ]; then
+  if [ -x "$CDP_APP" ]; then
+    CHROME_BIN="$CDP_APP"
+  else
+    CHROME_BIN="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+  fi
+fi
 
 while [ $# -gt 0 ]; do
   case "$1" in

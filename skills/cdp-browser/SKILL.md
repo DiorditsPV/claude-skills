@@ -25,6 +25,14 @@ Chrome с automation-флагами (`navigator.webdriver=true`) и палитс
 SKILL_DIR="<абсолютный путь к каталогу этого скилла>"
 ```
 
+0. **Один раз на машину — отдельный бандл «Chrome CDP»** (чтобы служебный браузер отличался
+   в Dock и Cmd-Tab от личного: серая иконка Chrome с красным бейджем `CDP`):
+   ```bash
+   bash "$SKILL_DIR/scripts/make-cdp-app.sh"   # ~/Applications/Chrome CDP.app, APFS-клон, диск не расходует
+   ```
+   `ensure.sh` подхватывает бандл автоматически, если он есть; иначе берёт обычный Chrome.
+   Пересобирать после обновления Google Chrome — клон не обновляется сам.
+
 1. **Гарантировать браузер** (идемпотентно — если порт жив, повторно не запускает):
    ```bash
    bash "$SKILL_DIR/scripts/ensure.sh"                 # эфемерный профиль /tmp/chrome-cdp
@@ -66,7 +74,10 @@ SKILL_DIR="<абсолютный путь к каталогу этого ски�
 ## Ограничения
 - Скилл **не может** перезапустить Claude Code или перечитать аргументы MCP-сервера — поэтому MCP-native
   путь требует ручной предварительной настройки, а дефолт здесь — прямой CDP.
-- macOS-путь к Chrome зашит в `ensure.sh`; переопределяется через `CHROME_BIN`.
+- Порядок выбора бинарника в `ensure.sh`: `$CHROME_BIN` → `~/Applications/Chrome CDP.app`
+  → `/Applications/Google Chrome.app`. Пути macOS-специфичны.
+- «Chrome CDP» — клон, автообновление Google его не трогает: после апдейта Chrome
+  перезапусти `make-cdp-app.sh`, иначе служебный браузер останется на старой версии.
 - Если порт не поднялся («забытый» automation-Chrome, дефолтный профиль) — диагностика
   в `reference/chrome-cdp-setup.md`, §4.
 

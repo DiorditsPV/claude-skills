@@ -1,18 +1,23 @@
 #!/usr/bin/env python3
-"""Статистика использования скиллов по session-логам Claude Code.
+"""Статистика использования по session-логам Claude Code.
 
-Сканирует ~/.claude/projects/**/*.jsonl: вызовы Skill-тула и slash-команды
-(<command-name>). Выводит TSV: skill<TAB>count<TAB>first_used<TAB>last_used.
-Использование: usage_stats.py [logs_dir]
+Сканирует ~/.claude/projects/**/*.jsonl.
+Режим по умолчанию — скиллы: вызовы Skill-тула и slash-команды (<command-name>).
+Режим --mcp — вызовы MCP-тулов, агрегированные по серверу (mcp__<server>__*).
+Вывод TSV: name<TAB>count<TAB>first_used<TAB>last_used.
+Использование: usage_stats.py [--mcp] [logs_dir]
 """
 import re
 import sys
 from pathlib import Path
 
-LOGS = Path(sys.argv[1]) if len(sys.argv) > 1 else Path.home() / ".claude" / "projects"
+args = [a for a in sys.argv[1:] if a != "--mcp"]
+MCP_MODE = "--mcp" in sys.argv[1:]
+LOGS = Path(args[0]) if args else Path.home() / ".claude" / "projects"
 
 RE_SKILL = re.compile(r'"name":"Skill","input":\{[^{}]*?"skill":"([^"]+)"')
 RE_CMD = re.compile(r"<command-name>/?([\w:-]+)</command-name>")
+RE_MCP = re.compile(r'"name":"mcp__([\w-]+?)__')
 RE_TS = re.compile(r'"timestamp":"(\d{4}-\d{2}-\d{2})')
 
 stats = {}  # name -> [count, first, last]
@@ -30,14 +35,22 @@ for f in LOGS.rglob("*.jsonl"):
     try:
         with open(f, errors="replace") as fh:
             for line in fh:
-                if '"name":"Skill"' not in line and "<command-name>" not in line:
-                    continue
-                m_ts = RE_TS.search(line)
-                day = m_ts.group(1) if m_ts else ""
-                for m in RE_SKILL.finditer(line):
-                    note(m.group(1), day)
-                for m in RE_CMD.finditer(line):
-                    note(m.group(1), day)
+                if MCP_MODE:
+                    if '"name":"mcp__' not in line:
+                        continue
+                    m_ts = RE_TS.search(line)
+                    day = m_ts.group(1) if m_ts else ""
+                    for m in RE_MCP.finditer(line):
+                        note(m.group(1), day)
+                else:
+                    if '"name":"Skill"' not in line and "<command-name>" not in line:
+                        continue
+                    m_ts = RE_TS.search(line)
+                    day = m_ts.group(1) if m_ts else ""
+                    for m in RE_SKILL.finditer(line):
+                        note(m.group(1), day)
+                    for m in RE_CMD.finditer(line):
+                        note(m.group(1), day)
     except OSError:
         continue
 

@@ -15,6 +15,7 @@
 | [curator](skills/curator/SKILL.md) | Обслуживание библиотеки скиллов: статистика использования, архив, консолидация | да |
 | [to-wiki](skills/to-wiki/SKILL.md) | Документирование существующего в Confluence: фактура из первоисточника, разделы по предмету, публикация страницей ([storage-разметка](skills/to-wiki/reference/confluence-storage.md)) | нет |
 | [grill-me](skills/grill-me/SKILL.md) | Жёсткое интервью по плану/дизайну до общего понимания (адаптация промпта mattpokock) | нет |
+| [concept-brief](skills/concept-brief/SKILL.md) | Концепт цифрового продукта от модели «пользователь → ценность → поведение → бизнес-модель»: компиляция идеи → гейт → Concept Brief по 20 шагам ([методология](skills/concept-brief/reference/methodology.md), [шаблон](skills/concept-brief/templates/concept-brief.md)) | нет |
 
 ## Агенты
 

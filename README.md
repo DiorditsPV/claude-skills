@@ -15,7 +15,6 @@
 | [curator](skills/curator/SKILL.md) | Обслуживание библиотеки скиллов: статистика использования, архив, консолидация | да |
 | [to-wiki](skills/to-wiki/SKILL.md) | Документирование существующего в Confluence: фактура из первоисточника, разделы по предмету, публикация страницей ([storage-разметка](skills/to-wiki/reference/confluence-storage.md)) | нет |
 | [grill-me](skills/grill-me/SKILL.md) | Жёсткое интервью по плану/дизайну до общего понимания (адаптация промпта mattpokock) | нет |
-| [product-lead](skills/product-lead/SKILL.md) | Ведёт личный продукт как продакт-лид: concept (Concept Brief от продуктовой модели), release (описание релизной версии: фичи под монетизацию, free/paid, DoD), v1 (аудит, гэп-лист, план, гейты, ручной прогон, тег) ([методология](skills/product-lead/reference/methodology.md), [шаблоны](skills/product-lead/templates/)) | нет |
 
 ## Агенты
 

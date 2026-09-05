@@ -15,6 +15,7 @@
 | [curator](skills/curator/SKILL.md) | Обслуживание библиотеки скиллов: статистика использования, архив, консолидация | да |
 | [to-wiki](skills/to-wiki/SKILL.md) | Документирование существующего в Confluence: фактура из первоисточника, разделы по предмету, публикация страницей ([storage-разметка](skills/to-wiki/reference/confluence-storage.md)) | нет |
 | [grill-me](skills/grill-me/SKILL.md) | Жёсткое интервью по плану/дизайну до общего понимания (адаптация промпта mattpokock) | нет |
+| [research-synthesis](skills/research-synthesis/SKILL.md) | Сведение большого документа или пакета исследований, отчётов, решений и ревью в связное объяснение с проверяемыми основаниями ([рабочие записи](skills/research-synthesis/references/working-records.md)) | нет |
 
 ## Агенты
 
